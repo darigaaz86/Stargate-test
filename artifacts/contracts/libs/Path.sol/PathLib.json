@@ -1,0 +1,39 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "PathLib",
+  "sourceName": "contracts/libs/Path.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "Path_AlreadyHasCredit",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Path_InsufficientCredit",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Path_UnlimitedCredit",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "amountSD",
+          "type": "uint64"
+        }
+      ],
+      "name": "Path_CreditBurned",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220599462faaf1cbee166c73fe65f6d2f61cd2df4221170c4757de4fcdc66ec0ee964736f6c634300081c0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220599462faaf1cbee166c73fe65f6d2f61cd2df4221170c4757de4fcdc66ec0ee964736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

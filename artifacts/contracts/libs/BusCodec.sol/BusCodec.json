@@ -1,0 +1,31 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "BusCodec",
+  "sourceName": "contracts/libs/BusCodec.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "BusCodec_InvalidBusBytesLength",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "BusCodec_InvalidMessage",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "BusCodec_InvalidPassenger",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "BusCodec_InvalidPassengersBytesLength",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212206c8f1ec028641f733679077b440e088a5f60dddc754cac1648bd8305a551d44564736f6c634300081c0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212206c8f1ec028641f733679077b440e088a5f60dddc754cac1648bd8305a551d44564736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

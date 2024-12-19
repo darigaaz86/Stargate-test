@@ -1,0 +1,110 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "BusLib",
+  "sourceName": "contracts/libs/Bus.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "nativeDrop",
+          "type": "bool"
+        }
+      ],
+      "name": "Bus_InvalidFare",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "numPassengers",
+          "type": "uint8"
+        }
+      ],
+      "name": "Bus_InvalidNumPassengers",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Bus_InvalidPassenger",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Bus_InvalidStartTicket",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Bus_QueueFull",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "dstEid",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint72",
+          "name": "startTicketId",
+          "type": "uint72"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "numPassengers",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "guid",
+          "type": "bytes32"
+        }
+      ],
+      "name": "BusDriven",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "dstEid",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint72",
+          "name": "ticketId",
+          "type": "uint72"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint80",
+          "name": "fare",
+          "type": "uint80"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "passenger",
+          "type": "bytes"
+        }
+      ],
+      "name": "BusRode",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220da884a13e63dce0f1fa20d86e2d3adf621d3f0d4d9585464aa0931cd341375fd64736f6c634300081c0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220da884a13e63dce0f1fa20d86e2d3adf621d3f0d4d9585464aa0931cd341375fd64736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

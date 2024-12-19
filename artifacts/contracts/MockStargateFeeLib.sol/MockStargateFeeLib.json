@@ -1,0 +1,113 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MockStargateFeeLib",
+  "sourceName": "contracts/MockStargateFeeLib.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "dstEid",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "amountInSD",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "deficitSD",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "toOFT",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isTaxi",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct FeeParams",
+          "name": "_params",
+          "type": "tuple"
+        }
+      ],
+      "name": "applyFee",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "amountOutSD",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "dstEid",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "amountInSD",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "deficitSD",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "toOFT",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isTaxi",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct FeeParams",
+          "name": "_params",
+          "type": "tuple"
+        }
+      ],
+      "name": "applyFeeView",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "amountOutSD",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052348015600f57600080fd5b5061019b8061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806343d9564d1461003b57806381993cd01461003b575b600080fd5b61004e6100493660046100ae565b61006b565b60405167ffffffffffffffff909116815260200160405180910390f35b600080606461008060608501604086016100c9565b61008a91906100f3565b90508061009d60608501604086016100c9565b6100a79190610131565b9392505050565b600060c08284031280156100c157600080fd5b509092915050565b6000602082840312156100db57600080fd5b813567ffffffffffffffff811681146100a757600080fd5b600067ffffffffffffffff83168061011b57634e487b7160e01b600052601260045260246000fd5b8067ffffffffffffffff84160491505092915050565b67ffffffffffffffff828116828216039081111561015f57634e487b7160e01b600052601160045260246000fd5b9291505056fea26469706673582212200fbf41d33615526a3dbb1787d224da09b8097211bd5c98f891d3619f72cad3cb64736f6c634300081c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c806343d9564d1461003b57806381993cd01461003b575b600080fd5b61004e6100493660046100ae565b61006b565b60405167ffffffffffffffff909116815260200160405180910390f35b600080606461008060608501604086016100c9565b61008a91906100f3565b90508061009d60608501604086016100c9565b6100a79190610131565b9392505050565b600060c08284031280156100c157600080fd5b509092915050565b6000602082840312156100db57600080fd5b813567ffffffffffffffff811681146100a757600080fd5b600067ffffffffffffffff83168061011b57634e487b7160e01b600052601260045260246000fd5b8067ffffffffffffffff84160491505092915050565b67ffffffffffffffff828116828216039081111561015f57634e487b7160e01b600052601160045260246000fd5b9291505056fea26469706673582212200fbf41d33615526a3dbb1787d224da09b8097211bd5c98f891d3619f72cad3cb64736f6c634300081c0033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
