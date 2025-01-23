@@ -9,6 +9,7 @@ import { ITokenMessaging, TaxiParams } from "./interfaces/ITokenMessaging.sol";
 import { Transfer } from "./libs/Transfer.sol";
 import { StargateBase, FeeParams } from "./StargateBase.sol";
 import { LPToken } from "./utils/LPToken.sol";
+import "hardhat/console.sol";
 
 /// @title A Stargate contract representing a liquidity pool. Users can deposit tokens into the pool and receive
 /// @title LP tokens in exchange, which can be later be redeemed to recover their deposit and a reward which is
@@ -249,7 +250,10 @@ contract StargatePool is StargateBase, IStargatePool {
 
     /// @notice Decrease the pool balance
     function _postOutflow(uint64 _amountSD) internal override {
+        console.log("start _postOutflow");
+        console.log("before deduct, poolBalanceSD:", poolBalanceSD, "_amountSD:", _amountSD);
         poolBalanceSD -= _amountSD;
+        console.log("after deduct poolBalanceSD:", poolBalanceSD);
     }
 
     /// @notice Charge an account an amount of pooled tokens.

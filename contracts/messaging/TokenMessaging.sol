@@ -160,6 +160,14 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
         // step 2: ride the bus and get the encoded passenger bytes etc.
         uint32 dstEid = _params.dstEid;
         // console.log("before ride function, assetId", assetId, "dstEid", dstEid);
+        // console.log("queueCapacity:", queueCapacity);
+        // console.log("dstEid:", dstEid);
+        console.log("assetId:", assetId);
+        console.log("_params.amountSD:", _params.amountSD);
+        console.log("busQueues[dstEid].maxNumPassengers :", busQueues[dstEid].maxNumPassengers);
+        console.log("busQueues[dstEid].busFare :", busQueues[dstEid].busFare);
+        console.log("busQueues[dstEid].busAndNativeDropFare :", busQueues[dstEid].busAndNativeDropFare);
+        console.log("busQueues[dstEid].nextTicketId :", busQueues[dstEid].nextTicketId);
         (uint72 ticketId, bytes memory passengerBytes, uint256 fare) = busQueues[dstEid].ride(
             queueCapacity,
             dstEid,
@@ -170,6 +178,7 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
                 nativeDrop: _params.nativeDrop
             })
         );
+        console.logBytes(passengerBytes);
 
         // step 3: create the 'Ticket' which acts like a 'receipt' for the passenger
         ticket = Ticket(ticketId, passengerBytes);
@@ -202,10 +211,24 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
         bytes calldata _passengers
     ) external payable returns (MessagingReceipt memory receipt) {
         // Step 1: check the tickets and drive
+        console.log("start driveBus func:");
+        console.logBytes(_passengers);
+        // console.log(busQueues[_dstEid].maxNumPassengers);
+        // console.log(busQueues[_dstEid].busFare);
+        // console.log(busQueues[_dstEid].qLength);
+        // console.log(busQueues[_dstEid].nextTicketId);
         Bus memory bus = busQueues[_dstEid].checkTicketsAndDrive(queueCapacity, _passengers);
+        console.log("after checkTicketsAndDrive func");
+        // console.log(busQueues[_dstEid].maxNumPassengers);
+        // console.log(busQueues[_dstEid].busFare);
+        // console.log(busQueues[_dstEid].qLength);
+        // console.log(busQueues[_dstEid].nextTicketId);
 
         // Step 2: generate the lzMsg and lzOptions
         (bytes memory message, bytes memory options) = _encodeMessageAndOptionsForDriveBus(_dstEid, bus);
+        console.logBytes(message);
+        console.logBytes(options);
+        console.log("after _encodeMessageAndOptionsForDriveBus func");
 
         // Step 3: send the message through LZ
         receipt = _lzSend(_dstEid, message, options, MessagingFee(msg.value, 0), msg.sender);
@@ -220,6 +243,9 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
     ) internal view returns (bytes memory message, bytes memory options) {
         // In the event that nativeDropAmount is zero, the transfer is skipped in _lzReceiveBus(...) on destination.
         uint128 nativeDropAmount = nativeDropAmounts[_dstEid];
+        console.log("start _encodeMessageAndOptionsForDriveBus func");
+        console.log("nativeDropAmount:", nativeDropAmount);
+        console.log("_bus.totalNativeDrops:", _bus.totalNativeDrops);
         message = BusCodec.encodeBus(_bus.totalNativeDrops, nativeDropAmount, _bus.passengersBytes);
         options = _buildOptionsForDriveBus(_dstEid, _bus.numPassengers, _bus.totalNativeDrops, nativeDropAmount);
     }
@@ -244,12 +270,15 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
         (uint128 totalNativeDrops, uint128 nativeDropAmount, BusPassenger[] memory passengers) = BusCodec.decodeBus(
             _busBytes
         );
+        console.log("totalNativeDrops:", totalNativeDrops, "nativeDropAmount:", nativeDropAmount);
+        console.log("msg.value:", msg.value);
         if (totalNativeDrops > 0 && msg.value != (totalNativeDrops * nativeDropAmount))
             revert Messaging_InvalidMsgValue();
 
         uint256 nativeDropAmountLeft = msg.value;
 
         for (uint8 seatNumber = 0; seatNumber < passengers.length; seatNumber++) {
+            console.log("for loop _lzReceiveBus");
             BusPassenger memory passenger = passengers[seatNumber];
             address stargate = _safeGetStargateImpl(passenger.assetId);
             address receiver = AddressCast.toAddress(passenger.receiver);
@@ -268,10 +297,12 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
                 }
             }
 
+            console.log("receiver:", receiver, "passenger.amountSD:", passenger.amountSD);
             ITokenMessagingHandler(stargate).receiveTokenBus(_origin, _guid, seatNumber, receiver, passenger.amountSD);
         }
 
         // refund the remaining native token to the planner without a gas limit
+        console.log("nativeDropAmountLeft", nativeDropAmountLeft);
         if (nativeDropAmountLeft > 0) Transfer.safeTransferNative(planner, nativeDropAmountLeft, false);
     }
 
@@ -288,6 +319,7 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
 
     /// @dev The native coin is already checked in the stargate contract and transferred to this contract
     function _payNative(uint256 _nativeFee) internal pure override returns (uint256 nativeFee) {
+        console.log("tokenMsg payNative func");
         nativeFee = _nativeFee;
     }
 
@@ -302,5 +334,30 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
             if (stargateImpls[assetId] == _sender) return true;
         }
         return false;
+    }
+
+    /**
+     * @notice Sends a message from the source to destination chain.
+     * @param _dstEid Destination chain's endpoint ID.
+     * @param _message The message to send.
+     * @param _options Message execution options (e.g., for sending gas to destination).
+     */
+    function send(
+        uint32 _dstEid,
+        string memory _message,
+        bytes calldata _options
+    ) external payable {
+        // Encodes the message before invoking _lzSend.
+        // Replace with whatever data you want to send!
+        bytes memory _payload = abi.encode(_message);
+        _lzSend(
+            _dstEid,
+            _payload,
+            _options,
+            // Fee in native gas and ZRO token.
+            MessagingFee(msg.value, 0),
+            // Refund address in case of failed source message.
+            payable(msg.sender)
+        );
     }
 }

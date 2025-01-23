@@ -38,6 +38,7 @@ contract StargatePoolNative is StargatePool {
     /// @param _amountLD The value to transfer in LD
     /// @return success Whether The transfer was successful
     function _outflow(address _to, uint256 _amountLD) internal override returns (bool success) {
+        console.log("stargateNative _outflow func");
         success = Transfer.transferNative(_to, _amountLD, true);
     }
 
@@ -75,6 +76,7 @@ contract StargatePoolNative is StargatePool {
     function _assertMsgValue(uint256 _amountLD) internal view override {
         // msg.value should be exactly the same as the amountLD and not have dust
         // _sd2ld(_ld2sd(_amountLD))) removes the dust if any
+        console.log("stargatePoolNative _assertMsgValue");
         if (_amountLD != msg.value || _amountLD != _sd2ld(_ld2sd(_amountLD))) revert Stargate_InvalidAmount();
     }
 

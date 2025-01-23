@@ -3,6 +3,8 @@ pragma solidity ^0.8.22;
 
 import { SafeCast } from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
+import "hardhat/console.sol";
+
 struct BusPassenger {
     uint16 assetId;
     bytes32 receiver;
@@ -96,6 +98,8 @@ library BusCodec {
         if (busBytesLength < HEADER_BYTES_LENGTH) revert BusCodec_InvalidBusBytesLength();
 
         // Step 1: decode nativeDrop details
+        // console.logBytes(_busBytes[MSG_TYPE_BYTES_OFFSET:NATIVE_DROP_AMOUNT_TOTAL_OFFSET]);
+        // console.logBytes(_busBytes[NATIVE_DROP_AMOUNT_TOTAL_OFFSET:NATIVE_DROP_AMOUNT_OFFSET]);
         totalNativeDrops = uint128(bytes16(_busBytes[MSG_TYPE_BYTES_OFFSET:NATIVE_DROP_AMOUNT_TOTAL_OFFSET]));
         nativeDropAmount = uint128(bytes16(_busBytes[NATIVE_DROP_AMOUNT_TOTAL_OFFSET:NATIVE_DROP_AMOUNT_OFFSET]));
 

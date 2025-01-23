@@ -3,6 +3,7 @@ pragma solidity ^0.8.22;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
 /// @dev WARNING: Transferring tokens, when the token address is wrong, will fail silently.
 contract Transfer is Ownable(msg.sender) {
@@ -30,8 +31,11 @@ contract Transfer is Ownable(msg.sender) {
     /// @param _gasLimited Whether to limit gas available for the 'fall-back'
     /// @return success Whether the transfer was successful
     function transferNative(address _to, uint256 _value, bool _gasLimited) internal returns (bool success) {
+        console.log("stargateNative transferNative func");
         uint256 gasForCall = _gasLimited ? transferGasLimit : gasleft();
 
+        console.log("_to:", _to, "_value:", _value);
+        console.log("From Address:", address(this), "Balance:", address(this).balance);
         // @dev We dont care about the data returned here, only success or not.
         assembly {
             success := call(gasForCall, _to, _value, 0, 0, 0, 0)
@@ -69,11 +73,13 @@ contract Transfer is Ownable(msg.sender) {
     /// @param _gasLimited Whether to limit the amount of gas when doing a native transfer
     /// @return success Whether the transfer was successful or not
     function transfer(address _token, address _to, uint256 _value, bool _gasLimited) internal returns (bool success) {
+        console.log("_token:", _token, "_to:", _to);
         if (_token == address(0)) {
             success = transferNative(_to, _value, _gasLimited);
         } else {
             success = transferToken(_token, _to, _value);
         }
+        console.log("success:", success);
     }
 
     /// @notice Approve a given amount of token for an account

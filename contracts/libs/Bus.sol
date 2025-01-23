@@ -71,6 +71,8 @@ using BusLib for BusQueue global;
 /// @dev The messages are not actually stored on-chain, but a hash representing them is stored.
 /// @dev This hash serves as proof that the driver provided the original data when calling
 /// @dev `drive`. This saves storage.
+import "hardhat/console.sol";
+
 library BusLib {
     error Bus_InvalidFare(bool nativeDrop);
     error Bus_InvalidPassenger();
@@ -159,6 +161,7 @@ library BusLib {
     ) internal view returns (Bus memory bus) {
         // Validate the number of passengers
         uint8 numPassengers = BusCodec.getNumPassengers(_passengersBytes);
+        console.log("numPassengers:", numPassengers, "_queue.maxNumPassengers:", _queue.qLength);
         if (numPassengers == 0 || numPassengers > _queue.maxNumPassengers || numPassengers > _queue.qLength) {
             revert Bus_InvalidNumPassengers(numPassengers);
         }
@@ -169,9 +172,11 @@ library BusLib {
             ? bytes32(0)
             : _queue.hashChain[uint16((startTicketId - 1) % _queueCapacity)];
         (uint8 totalNativeDrops, bytes32 lastHash) = BusCodec.parsePassengers(_passengersBytes, previousHash);
+        console.log("totalNativeDrops:", totalNativeDrops);
 
         // Validate the last hash
         uint72 lastTicketIdToDrive = startTicketId + numPassengers - 1;
+        console.log("startTicketId:", startTicketId, "numPassengers:", numPassengers);
         if (lastHash != _queue.hashChain[uint16(lastTicketIdToDrive % _queueCapacity)]) revert Bus_InvalidPassenger();
 
         // Set the bus params

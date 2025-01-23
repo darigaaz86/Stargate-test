@@ -262,12 +262,16 @@ abstract contract StargateBase is Transfer, IStargate, ITokenMessagingHandler, I
     {
         // step 1: assets inflows and apply the fee to the input amount
         (bool isTaxi, uint64 amountInSD, uint64 amountOutSD) = _inflowAndCharge(_sendParam);
+        console.log("amountInSD:", amountInSD, "amountOutSD:", amountOutSD);
 
         // step 2: generate the oft receipt
         oftReceipt = OFTReceipt(_sd2ld(amountInSD), _sd2ld(amountOutSD));
 
         // step 3: assert the messaging fee
+        console.log("before _assertMessagingFee func, nativeFee:", _fee.nativeFee, "lzTokenFee:", _fee.lzTokenFee);
+        console.log("oftReceipt, amountSentLD:", oftReceipt.amountSentLD);
         MessagingFee memory messagingFee = _assertMessagingFee(_fee, oftReceipt.amountSentLD);
+        console.log("nativeFee:", messagingFee.nativeFee, "lzTokenFee:", messagingFee.lzTokenFee);
 
         // step 4: send the token depending on the mode Taxi or Bus
         if (isTaxi) {
@@ -331,18 +335,24 @@ abstract contract StargateBase is Transfer, IStargate, ITokenMessagingHandler, I
         uint64 _amountSD
     ) external nonReentrantAndNotPaused onlyCaller(tokenMessaging) {
         uint256 amountLD = _sd2ld(_amountSD);
+        // console.log("_amountSD:", _amountSD, "amountLD:", amountLD);
 
+        console.log("start receiveTokenBus");
         bool success = _outflow(_receiver, amountLD);
         if (success) {
+            console.log("receiveTokenBus success");
             _postOutflow(_amountSD);
+            console.log("after _postOutflow");
             emit OFTReceived(_guid, _origin.srcEid, _receiver, amountLD);
         } else {
+            console.log("receiveTokenBus not success");
             /**
              * @dev The busRide mode does not support composeMsg in any form. Thus we hardcode it to ""
              */
             unreceivedTokens[_guid][_seatNumber] = keccak256(abi.encodePacked(_origin.srcEid, _receiver, amountLD, ""));
             emit UnreceivedTokenCached(_guid, _seatNumber, _origin.srcEid, _receiver, amountLD, "");
         }
+        console.log("end receiveTokenBus");
     }
 
     // taxi mode
@@ -531,8 +541,10 @@ abstract contract StargateBase is Transfer, IStargate, ITokenMessagingHandler, I
         amountInSD = _inflow(msg.sender, _sendParam.amountLD);
 
         FeeParams memory feeParams = _buildFeeParams(_sendParam.dstEid, amountInSD, isTaxi);
+        console.log("amountInS:", feeParams.amountInSD, "deficitSD:", feeParams.deficitSD);
 
         amountOutSD = _chargeFee(feeParams, _ld2sd(_sendParam.minAmountLD));
+        console.log("amountOutSD:", amountOutSD);
 
         paths[_sendParam.dstEid].decreaseCredit(amountOutSD); // remove the credit from the path
         _postInflow(amountOutSD); // post inflow actions with the amount deducted by the fee
@@ -692,7 +704,7 @@ abstract contract StargateBase is Transfer, IStargate, ITokenMessagingHandler, I
         MessagingFee memory _fee,
         uint256 /*_amountInLD*/
     ) public payable virtual returns (MessagingFee memory) {
-        // console.log("_fee:", _fee.nativeFee, "value:", msg.value);
+        console.log("_fee:", _fee.nativeFee, "value:", msg.value);
         if (_fee.nativeFee != msg.value) revert Stargate_InvalidAmount();
         return _fee;
     }
