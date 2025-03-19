@@ -15,6 +15,8 @@ import { MessagingComposer } from "./MessagingComposer.sol";
 import { MessageLibManager } from "./MessageLibManager.sol";
 import { MessagingContext } from "./MessagingContext.sol";
 
+import "hardhat/console.sol";
+
 // LayerZero EndpointV2 is fully backward compatible with LayerZero Endpoint(V1), but it also supports additional
 // features that Endpoint(V1) does not support now and may not in the future. We have also changed some terminology
 // to clarify pre-existing language that might have been confusing.
@@ -97,6 +99,7 @@ contract EndpointV2 is ILayerZeroEndpointV2, MessagingChannel, MessageLibManager
         _assertMessagingFee(receipt.fee, suppliedNative, suppliedLzToken);
 
         // handle lz token fees
+        console.log("EndpointV2::send: before _payToken");
         _payToken(lzToken, receipt.fee.lzTokenFee, suppliedLzToken, _sendLibrary, _refundAddress);
 
         // handle native fees

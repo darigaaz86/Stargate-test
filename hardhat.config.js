@@ -10,5 +10,15 @@ module.exports = {
         runs: 200 // or an appropriate number
       }
     }
+  },
+  networks: {
+    sepolia: {
+      url: "https://ethereum-sepolia.publicnode.com",
+      accounts: ["yourPrivateKey"], // Uses private key for signing transactions
+    },
+    opSepolia: { // Optimism Sepolia
+      url: "https://optimism-sepolia.publicnode.com", // OP Sepolia RPC
+      accounts: ["yourPrivateKey"], 
+    }
   }
 };

@@ -334,22 +334,6 @@ describe("StargatePoolNative: send and sendToken functions", function () {
     await tokenMessaging.lzReceive(origin, guid, message, addr1.address, "0x");
   });
 
-  // it("test stargate receiveTokenBus", async function () {
-  //   const { endpointV2, tokenMessaging, stargatePoolNative, owner, addr1 } = await loadFixture(deployDstMessagingFixture);
-
-  //   console.log("start test receiveTokenBus");
-  //   // const tx = await addr1.sendTransaction({
-  //   //   to: "0x3e6AFD653D62d7D797C7c2a0a427a17a6457C56D",
-  //   //   value: ethers.parseEther("10"), // Sending 1 ETH
-  //   // });
-  //   // await tx.wait();
-
-  //   const sender = ethers.zeroPadValue(endpointV2.target, 32);
-  //   const origin = { srcEid: eid, sender: sender, nonce: 1 };
-  //   const guid = "0x4e9f50c5c2f1745fb8e455d71c92517ffce1b2345678ab901cdef09876543210";
-  //   await stargatePoolNative.receiveTokenBus(origin, guid, 0, addr1.address, 10000000000000 );
-  // });
-
   it("test stargate recoverToken", async function () {
     const { endpointV2, tokenMessaging, stargatePoolNative, owner, addr1 } = await loadFixture(deployDstMessagingFixture);
 

@@ -249,7 +249,7 @@ contract StargatePool is StargateBase, IStargatePool {
     }
 
     /// @notice Decrease the pool balance
-    function _postOutflow(uint64 _amountSD) internal override {
+    function _postOutflow(uint64 _amountSD) internal override virtual {
         console.log("start _postOutflow");
         console.log("before deduct, poolBalanceSD:", poolBalanceSD, "_amountSD:", _amountSD);
         poolBalanceSD -= _amountSD;

@@ -267,6 +267,7 @@ contract TokenMessaging is Transfer, MessagingBase, TokenMessagingOptions, IToke
     }
 
     function _lzReceiveBus(Origin calldata _origin, bytes32 _guid, bytes calldata _busBytes) internal {
+        console.logBytes(_busBytes);
         (uint128 totalNativeDrops, uint128 nativeDropAmount, BusPassenger[] memory passengers) = BusCodec.decodeBus(
             _busBytes
         );
