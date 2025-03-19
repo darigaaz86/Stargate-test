@@ -30,7 +30,6 @@ Before running the tests, ensure you have the following installed:
    git clone https://github.com/darigaaz86/Stargate-test.git
    cd Stargate-test
    ```
-
 2. Install dependencies:
 
    ```bash
@@ -83,17 +82,21 @@ npx hardhat test test/Stargate.js
 🚀 **This flow uses the default DVN and automatically executes the transactions.**
 
 1. **Deploy and configure all Stargate contracts**
+
    ```bash
    npx hardhat run scripts/deployStargate.js
    ```
 2. **Call LP send function**
+
    ```bash
    npx hardhat run scripts/sendToken.js --network opSepolia
    ```
 3. **Call tokenMsg `driveBus` function**
+
    ```bash
    npx hardhat run scripts/driveBus.js --network opSepolia
    ```
+
    ✅ **Expected Outcome:** The destination address should receive ETH.
 
 ---
@@ -132,6 +135,26 @@ npx hardhat test test/Stargate.js
 
 ---
 
+## DVN and Executor Off-Chain Flow
+
+This section details the **off-chain execution flow** for the **DVN (Decentralized Verification Node)** and **Executor**.
+
+### 1. DVN Execution Flow
+
+- The **DVN** should call the **DVN `execute` function**, which **verifies the payload**.
+- Inside this function, it uses **low-level calldata** to call the **ULN `verify` function**.
+
+### 2. Executor Flow
+
+- The **Executor** should call the **`receiveUln commitVerification` function**, which **commits the payload**.
+- This function will internally call the **endpoint `verify` function** and bind the `inboundPayloadHash`.
+
+### 3. Executor Builder Flow
+
+- The **Executor Builder** should call the **Executor `execute302` function**, which serves as the **trigger point** for the **endpoint's `lzReceive` function**.
+
+---
+
 ### **Troubleshooting**
 
 - **If transactions fail**, ensure that `_packetHeader` and `_payloadHash` are correctly formatted.
@@ -142,4 +165,3 @@ npx hardhat test test/Stargate.js
 - **Check contract logs** if execution is not behaving as expected.
 
 Let me know if you need further improvements! 🚀
-
